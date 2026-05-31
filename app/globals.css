@@ -1,0 +1,321 @@
+@import "tailwindcss";
+
+/* ============================================
+   MADHUR SWEET — WARM MAROON & GOLD THEME
+   Inspired by traditional Indian sweets palette.
+   ============================================ */
+
+:root {
+  /* Brand colors — maroon, saffron, gold */
+  --brand-primary: 0 100% 27%;            /* deep maroon #8b0000 */
+  --brand-primary-foreground: 0 0% 100%;
+  --brand-secondary: 30 100% 60%;          /* saffron #ff9933 */
+  --brand-secondary-foreground: 0 0% 10%;
+  --brand-accent: 43 64% 52%;             /* gold #d4af37 */
+  --brand-accent-foreground: 8 28% 19%;
+
+  /* Neutral palette — warm cream tones */
+  --background: 30 50% 97%;
+  --foreground: 0 0% 18%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 18%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 18%;
+  --muted: 30 40% 94%;
+  --muted-foreground: 0 0% 40%;
+  --border: 30 25% 88%;
+  --input: 30 25% 88%;
+  --ring: 0 100% 27%;
+
+  /* Semantic */
+  --destructive: 0 75% 44%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 152 60% 32%;
+  --success-foreground: 0 0% 100%;
+  --warning: 43 90% 42%;
+  --warning-foreground: 0 0% 100%;
+
+  /* Layout */
+  --radius: 0.375rem;
+  --header-height: 4rem;
+  --banner-height: 2.5rem;
+
+  /* Font */
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+
+  /* ── Themeable surface colors (overridden by SiteSettingsProvider) ── */
+  /* Banner — defaults match the hardcoded maroon */
+  --banner-bg-from: 0 100% 27%;
+  --banner-bg-via:  0 62% 40%;
+  --banner-bg-to:   0 100% 27%;
+
+  /* Footer — defaults match the hardcoded dark brown */
+  --footer-bg-from: 8 40% 18%;
+  --footer-bg-to:   8 35% 13%;
+  --footer-text:    30 60% 92%;
+  --footer-accent:  43 64% 52%;
+}
+
+@theme inline {
+  --color-background: oklch(from hsl(var(--background)) l c h);
+  --color-foreground: oklch(from hsl(var(--foreground)) l c h);
+  --color-card: oklch(from hsl(var(--card)) l c h);
+  --color-card-foreground: oklch(from hsl(var(--card-foreground)) l c h);
+  --color-popover: oklch(from hsl(var(--popover)) l c h);
+  --color-popover-foreground: oklch(from hsl(var(--popover-foreground)) l c h);
+  --color-muted: oklch(from hsl(var(--muted)) l c h);
+  --color-muted-foreground: oklch(from hsl(var(--muted-foreground)) l c h);
+  --color-border: oklch(from hsl(var(--border)) l c h);
+  --color-input: oklch(from hsl(var(--input)) l c h);
+  --color-ring: oklch(from hsl(var(--ring)) l c h);
+  --color-primary: oklch(from hsl(var(--brand-primary)) l c h);
+  --color-primary-foreground: oklch(from hsl(var(--brand-primary-foreground)) l c h);
+  --color-secondary: oklch(from hsl(var(--brand-secondary)) l c h);
+  --color-secondary-foreground: oklch(from hsl(var(--brand-secondary-foreground)) l c h);
+  --color-accent: oklch(from hsl(var(--brand-accent)) l c h);
+  --color-accent-foreground: oklch(from hsl(var(--brand-accent-foreground)) l c h);
+  --color-destructive: oklch(from hsl(var(--destructive)) l c h);
+  --color-destructive-foreground: oklch(from hsl(var(--destructive-foreground)) l c h);
+  --color-success: oklch(from hsl(var(--success)) l c h);
+  --color-success-foreground: oklch(from hsl(var(--success-foreground)) l c h);
+  --color-warning: oklch(from hsl(var(--warning)) l c h);
+  --color-warning-foreground: oklch(from hsl(var(--warning-foreground)) l c h);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+/* Base styles */
+* {
+  border-color: theme(--color-border);
+}
+
+body {
+  background: theme(--color-background);
+  color: theme(--color-foreground);
+  font-family: var(--font-sans);
+}
+
+/* Tailwind v4 preflight removes the default cursor:pointer on buttons.
+   Restore it for any interactive element that isn't disabled. */
+button:not(:disabled):not([aria-disabled="true"]),
+[role="button"]:not(:disabled):not([aria-disabled="true"]),
+a[href],
+label[for],
+summary,
+input[type="submit"]:not(:disabled),
+input[type="button"]:not(:disabled),
+input[type="reset"]:not(:disabled),
+input[type="checkbox"]:not(:disabled),
+input[type="radio"]:not(:disabled) {
+  cursor: pointer;
+}
+
+/* Apply hero-section font (Fraunces) to all headings site-wide */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-fraunces), Georgia, serif;
+  letter-spacing: -0.015em;
+}
+
+/* Mandala animations — child keyframes must NOT use transform
+   to avoid compositing conflicts with parent <g> rotation */
+@keyframes mandala-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes mandala-spin-reverse {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+@keyframes mandala-pulse {
+  0%, 100% { opacity: 0.2; }
+  50%       { opacity: 0.55; }
+}
+@keyframes mandala-twinkle {
+  0%, 100% { opacity: 0.15; }
+  50%       { opacity: 0.8; }
+}
+@keyframes mandala-shimmer {
+  0%, 100% { opacity: 0.06; }
+  50%       { opacity: 0.18; }
+}
+@keyframes mandala-dash {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -1200; }
+}
+@keyframes mandala-dash-reverse {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: 1200; }
+}
+
+/* Subtle scrollbar — both axes */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted-foreground) / 0.2) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.2);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.35);
+}
+
+/* Order-placed success animation */
+@keyframes success-ring-pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes success-check-draw {
+  from {
+    stroke-dashoffset: 48;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes success-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+@keyframes success-sparkle {
+  0%, 100% {
+    transform: scale(0.8) rotate(0deg);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.15) rotate(18deg);
+    opacity: 1;
+  }
+}
+
+.success-ring {
+  animation: success-ring-pop 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.success-ring-pulse {
+  animation: success-pulse 2.4s ease-out infinite;
+}
+
+.success-check-path {
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: success-check-draw 0.55s 0.35s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+.success-sparkle {
+  animation: success-sparkle 2.8s ease-in-out infinite;
+}
+
+/* Order-status badge animations */
+@keyframes status-shine {
+  0% {
+    transform: translateX(-120%) skewX(-18deg);
+  }
+  60%, 100% {
+    transform: translateX(220%) skewX(-18deg);
+  }
+}
+
+@keyframes status-truck-roll {
+  0%, 100% {
+    transform: translateX(-1px);
+  }
+  50% {
+    transform: translateX(1px);
+  }
+}
+
+@keyframes status-clock-tick {
+  0%, 100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+}
+
+.status-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 70%
+  );
+  transform: translateX(-120%) skewX(-18deg);
+  animation: status-shine 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.status-icon-truck {
+  animation: status-truck-roll 1.4s ease-in-out infinite;
+}
+
+.status-icon-clock {
+  animation: status-clock-tick 2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* Testimonials marquee — continuous right-to-left scroll
+   The track contains the testimonial list duplicated twice.
+   We translate by -50% to seamlessly loop back to the start. */
+@keyframes testimonials-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.testimonials-track {
+  animation: testimonials-scroll 40s linear infinite;
+  will-change: transform;
+}
+
+.testimonials-marquee:hover .testimonials-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .testimonials-track {
+    animation: none;
+  }
+}
