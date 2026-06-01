@@ -19,7 +19,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
 
 export async function DELETE(request: NextRequest, { params }: Params) {
   const { id } = await params;
-  const res = await proxyToExpress(request, `/api/admin/testimonials/${id}`, { method: "DELETE" });
+  const res = await proxyToExpress(request, `/api/admin/testimonials/${id}`);
   revalidateTag("testimonials", { expire: 0 });
   return res;
 }
