@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import Image from "next/image";
 import {
   MessageSquareText,
   Phone,
@@ -12,6 +13,11 @@ import {
   Save,
   Check,
   Truck,
+  ImageIcon,
+  X,
+  ArrowUp,
+  ArrowDown,
+  Upload,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -32,6 +38,7 @@ interface SiteSettings {
   freeShippingThreshold: number;
   shippingFee: number;
   taxRate: number;
+  heroImages: string[];
   businessAddress: {
     name: string;
     phone: string;
@@ -61,6 +68,7 @@ const defaults: SiteSettings = {
   freeShippingThreshold: 0,
   shippingFee: 0,
   taxRate: 0,
+  heroImages: [],
   businessAddress: {
     name: "",
     phone: "",
@@ -84,6 +92,48 @@ export default function UtilityPage() {
   const [saving, setSaving] = useState<string | null>(null);
   const [saved, setSaved] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [heroUploading, setHeroUploading] = useState(false);
+
+  const handleHeroUpload = async (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    setHeroUploading(true);
+    setError(null);
+    try {
+      const fd = new FormData();
+      fd.append("folder", "hero");
+      for (const file of Array.from(files)) fd.append("files", file);
+
+      const res = await fetch("/api/admin/upload/multiple", { method: "POST", body: fd });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data?.error ?? "Upload failed");
+      }
+      const json = await res.json();
+      const uploaded: string[] = (json.data ?? []).map((d: { url: string }) => d.url);
+      setSettings((prev) => ({ ...prev, heroImages: [...prev.heroImages, ...uploaded] }));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Upload failed");
+    } finally {
+      setHeroUploading(false);
+    }
+  };
+
+  const removeHeroImage = (index: number) => {
+    setSettings((prev) => ({
+      ...prev,
+      heroImages: prev.heroImages.filter((_, i) => i !== index),
+    }));
+  };
+
+  const moveHeroImage = (index: number, direction: -1 | 1) => {
+    setSettings((prev) => {
+      const next = [...prev.heroImages];
+      const target = index + direction;
+      if (target < 0 || target >= next.length) return prev;
+      [next[index], next[target]] = [next[target], next[index]];
+      return { ...prev, heroImages: next };
+    });
+  };
 
   useEffect(() => {
     fetch("/api/admin/settings")
@@ -105,6 +155,7 @@ export default function UtilityPage() {
             freeShippingThreshold: d.freeShippingThreshold ?? 0,
             shippingFee: d.shippingFee ?? 0,
             taxRate: d.taxRate ?? 0,
+            heroImages: Array.isArray(d.heroImages) ? d.heroImages : [],
             businessAddress: d.businessAddress
               ? {
                   name: d.businessAddress.name ?? "",
@@ -289,6 +340,104 @@ export default function UtilityPage() {
               />
               <span className="text-sm font-medium">Banner active</span>
             </label>
+          </CardContent>
+        </Card>
+
+        {/* ── Hero Images ── */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div className="flex items-center gap-2">
+              <ImageIcon className="h-5 w-5 text-pink-500" />
+              <CardTitle className="text-lg">Hero Images</CardTitle>
+            </div>
+            <SaveBtn
+              section="heroImages"
+              onClick={() =>
+                saveSection("heroImages", {
+                  heroImages: settings.heroImages,
+                })
+              }
+            />
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              Upload one or more images to display as the homepage hero background. If
+              multiple are added, they will auto-rotate as a carousel.
+            </p>
+
+            <label className="flex items-center justify-center gap-2 h-24 w-full cursor-pointer rounded-lg border-2 border-dashed border-border bg-muted/30 hover:bg-muted/50 transition-colors">
+              {heroUploading ? (
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Uploading...</span>
+                </>
+              ) : (
+                <>
+                  <Upload className="h-5 w-5 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">
+                    Click to upload images
+                  </span>
+                </>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(e) => handleHeroUpload(e.target.files)}
+                disabled={heroUploading}
+                className="hidden"
+              />
+            </label>
+
+            {settings.heroImages.length > 0 && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                {settings.heroImages.map((url, index) => (
+                  <div
+                    key={url + index}
+                    className="group relative aspect-video overflow-hidden rounded-lg border border-border bg-muted"
+                  >
+                    <Image
+                      src={url}
+                      alt={`Hero ${index + 1}`}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                    />
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => moveHeroImage(index, -1)}
+                        disabled={index === 0}
+                        className="h-7 w-7 rounded bg-white/90 text-foreground flex items-center justify-center disabled:opacity-40 hover:bg-white"
+                        title="Move left"
+                      >
+                        <ArrowUp className="h-3.5 w-3.5 -rotate-90" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => moveHeroImage(index, 1)}
+                        disabled={index === settings.heroImages.length - 1}
+                        className="h-7 w-7 rounded bg-white/90 text-foreground flex items-center justify-center disabled:opacity-40 hover:bg-white"
+                        title="Move right"
+                      >
+                        <ArrowDown className="h-3.5 w-3.5 -rotate-90" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => removeHeroImage(index)}
+                        className="h-7 w-7 rounded bg-destructive/90 text-white flex items-center justify-center hover:bg-destructive"
+                        title="Remove"
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                    <div className="absolute top-1 left-1 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-medium text-white">
+                      {index + 1}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
 

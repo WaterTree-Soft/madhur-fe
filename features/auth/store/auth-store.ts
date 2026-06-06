@@ -41,10 +41,14 @@ async function fetchMe(jwt: string): Promise<User> {
   if (!res.ok) throw new Error("Session expired");
   const json = await res.json();
   const data = json.data ?? json;
+  const firstName = data.firstName ?? "";
+  const lastName = data.lastName ?? "";
   return {
     id: String(data.id),
     email: data.email,
-    name: data.name ?? data.email.split("@")[0],
+    firstName,
+    lastName,
+    name: data.name ?? (firstName || lastName ? `${firstName} ${lastName}`.trim() : data.email.split("@")[0]),
     role: mapRole(data.role ?? "user"),
     createdAt: data.createdAt,
   };
@@ -87,6 +91,62 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
+  loginWithGoogle: async (credential: string) => {
+    set({ isLoading: true });
+    try {
+      const res = await fetch(`${API_URL}/api/auth/google`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ credential }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err?.error ?? "Google sign-in failed");
+      }
+
+      const { data: responseData } = await res.json();
+      const jwt: string = responseData.jwt;
+      persistJwt(jwt);
+
+      const user = await fetchMe(jwt);
+      set({ user, jwt, isAuthenticated: true, isLoading: false });
+      useCartStore.getState().hydrateFromServer();
+      useAddressStore.getState().hydrateFromServer(user.id);
+    } catch (err) {
+      set({ isLoading: false });
+      throw err;
+    }
+  },
+
+  verifyOtp: async (email: string, otp: string) => {
+    set({ isLoading: true });
+    try {
+      const res = await fetch(`${API_URL}/api/auth/verify-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, otp }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err?.error ?? "Invalid or expired code");
+      }
+
+      const { data: responseData } = await res.json();
+      const jwt: string = responseData.jwt;
+      persistJwt(jwt);
+
+      const user = await fetchMe(jwt);
+      set({ user, jwt, isAuthenticated: true, isLoading: false });
+      useCartStore.getState().hydrateFromServer();
+      useAddressStore.getState().hydrateFromServer(user.id);
+    } catch (err) {
+      set({ isLoading: false });
+      throw err;
+    }
+  },
+
   register: async (data: RegisterFormData) => {
     set({ isLoading: true });
     try {
@@ -94,7 +154,8 @@ export const useAuthStore = create<AuthState>((set) => ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: data.name,
+          firstName: data.firstName,
+          lastName: data.lastName,
           email: data.email,
           password: data.password,
         }),
@@ -107,14 +168,8 @@ export const useAuthStore = create<AuthState>((set) => ({
         throw new Error(firstField?.[0] ?? err?.error ?? "Registration failed");
       }
 
-      const { data: responseData } = await res.json();
-      const jwt: string = responseData.jwt;
-      persistJwt(jwt);
-
-      const user = await fetchMe(jwt);
-      set({ user, jwt, isAuthenticated: true, isLoading: false });
-      useCartStore.getState().hydrateFromServer();
-      useAddressStore.getState().hydrateFromServer(user.id);
+      // Registration succeeds — user must verify email before logging in
+      set({ isLoading: false });
     } catch (err) {
       set({ isLoading: false });
       throw err;

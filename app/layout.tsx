@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 import { Banner, Header, Footer, WhatsAppButton, SiteSettingsProvider } from "@/components/layout";
 import { AuthInitializer } from "@/features/auth/components/auth-initializer";
+import { Providers } from "./providers";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
 
 const geistSans = Geist({
@@ -181,17 +182,19 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <AuthInitializer />
-        <SiteSettingsProvider>
-          <Banner
-            message="Diwali Special! Get 20% off on all sweets. Order now!"
-            link="/products"
-          />
-          <Header />
-          <main className="flex-1 flex flex-col">{children}</main>
-          <Footer />
-          <WhatsAppButton />
-        </SiteSettingsProvider>
+        <Providers>
+          <AuthInitializer />
+          <SiteSettingsProvider>
+            <Banner
+              message="Diwali Special! Get 20% off on all sweets. Order now!"
+              link="/products"
+            />
+            <Header />
+            <main className="flex-1 flex flex-col">{children}</main>
+            <Footer />
+            <WhatsAppButton />
+          </SiteSettingsProvider>
+        </Providers>
       </body>
     </html>
   );

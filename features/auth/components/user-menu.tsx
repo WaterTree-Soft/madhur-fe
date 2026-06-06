@@ -14,8 +14,9 @@ import { useAuthStore } from "../store/auth-store";
 import { getAvatarGradient, getInitials } from "@/lib/avatar";
 import { LoginForm } from "./login-form";
 import { RegisterForm } from "./register-form";
+import { ForgotPasswordForm } from "./forgot-password-form";
 
-type DialogView = "login" | "register";
+type DialogView = "login" | "register" | "forgot";
 
 export function UserMenu() {
   const router = useRouter();
@@ -38,6 +39,12 @@ export function UserMenu() {
 
   const handleSuccess = () => {
     closeLoginDialog();
+    setView("login");
+  };
+
+  const handleDialogClose = () => {
+    closeLoginDialog();
+    setView("login");
   };
 
   const initials = user?.name ? getInitials(user.name) : null;
@@ -66,35 +73,55 @@ export function UserMenu() {
         )}
       </button>
 
-      <Dialog open={loginDialogOpen} onOpenChange={(o) => !o && closeLoginDialog()}>
+      <Dialog open={loginDialogOpen} onOpenChange={(o) => !o && handleDialogClose()}>
         <DialogContent>
-          {view === "login" ? (
+          {view === "login" && (
             <>
-              <DialogHeader>
-                <DialogTitle>Welcome back</DialogTitle>
+              <DialogHeader className="space-y-1.5 text-center sm:text-center">
+                <DialogTitle className="text-2xl font-semibold">Welcome back</DialogTitle>
                 <DialogDescription>
-                  Sign in to your account to continue.
+                  Sign in to your Madhur Sweets account
                 </DialogDescription>
               </DialogHeader>
-              <div className="mt-4">
+              <div className="mt-6">
                 <LoginForm
                   onSuccess={handleSuccess}
                   onSwitchToRegister={() => setView("register")}
+                  onForgotPassword={() => setView("forgot")}
                 />
               </div>
             </>
-          ) : (
+          )}
+
+          {view === "register" && (
             <>
-              <DialogHeader>
-                <DialogTitle>Create an account</DialogTitle>
+              <DialogHeader className="space-y-1.5 text-center sm:text-center">
+                <DialogTitle className="text-2xl font-semibold">Create an account</DialogTitle>
                 <DialogDescription>
-                  Sign up to start ordering your favorite sweets.
+                  Sign up to start ordering your favorite sweets
                 </DialogDescription>
               </DialogHeader>
-              <div className="mt-4">
+              <div className="mt-6">
                 <RegisterForm
-                  onSuccess={handleSuccess}
                   onSwitchToLogin={() => setView("login")}
+                  onSuccess={handleSuccess}
+                />
+              </div>
+            </>
+          )}
+
+          {view === "forgot" && (
+            <>
+              <DialogHeader className="space-y-1.5 text-center sm:text-center">
+                <DialogTitle className="text-2xl font-semibold">Forgot password?</DialogTitle>
+                <DialogDescription>
+                  No worries, we&apos;ll send you reset instructions
+                </DialogDescription>
+              </DialogHeader>
+              <div className="mt-6">
+                <ForgotPasswordForm
+                  onBackToLogin={() => setView("login")}
+                  onSuccess={handleSuccess}
                 />
               </div>
             </>

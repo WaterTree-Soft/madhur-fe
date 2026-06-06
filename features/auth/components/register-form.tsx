@@ -1,177 +1,275 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
+import { Mail, Lock, User as UserIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "../store/auth-store";
 import { registerSchema } from "../schema/auth-schema";
+import { API_URL } from "@/lib/constants";
+import { GoogleSignInButton } from "./google-sign-in-button";
+import { OtpInput } from "./otp-input";
 
 interface RegisterFormProps {
-  /** Called after a successful registration. When provided, the form will NOT navigate itself. */
-  onSuccess?: () => void;
-  /** Optional handler for the "Sign in" link. When provided, renders a button instead of a link. */
   onSwitchToLogin?: () => void;
+  onSuccess?: () => void;
 }
 
-export function RegisterForm({ onSuccess, onSwitchToLogin }: RegisterFormProps = {}) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect");
+export function RegisterForm({ onSwitchToLogin, onSuccess }: RegisterFormProps = {}) {
   const register = useAuthStore((s) => s.register);
+  const verifyOtp = useAuthStore((s) => s.verifyOtp);
   const isLoading = useAuthStore((s) => s.isLoading);
 
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [success, setSuccess] = useState(false);
+  const [step, setStep] = useState<"form" | "otp">("form");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const [otp, setOtp] = useState("");
+  const [otpError, setOtpError] = useState("");
+  const [verifying, setVerifying] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendMessage, setResendMessage] = useState("");
+
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrors({});
-    setSuccess(false);
 
-    const result = registerSchema.safeParse({
-      name,
-      email,
-      password,
-      confirmPassword,
-    });
+    const result = registerSchema.safeParse({ firstName, lastName, email, password, confirmPassword });
 
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
       for (const issue of result.error.issues) {
         const key = issue.path[0];
-        if (typeof key === "string") {
-          fieldErrors[key] = issue.message;
-        }
+        if (typeof key === "string") fieldErrors[key] = issue.message;
       }
       setErrors(fieldErrors);
       return;
     }
 
     try {
-      await register({ name, email, password, confirmPassword });
-      setSuccess(true);
-
-      setTimeout(() => {
-        if (onSuccess) {
-          onSuccess();
-        } else if (redirectTo) {
-          router.push(redirectTo);
-        } else {
-          router.push("/");
-        }
-      }, 500);
+      await register({ firstName, lastName, email, password, confirmPassword });
+      setStep("otp");
     } catch (err) {
       setErrors({ form: err instanceof Error ? err.message : "Registration failed. Please try again." });
     }
   };
 
+  const handleVerify = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setOtpError("");
+
+    if (otp.length !== 6) {
+      setOtpError("Please enter the 6-digit code");
+      return;
+    }
+
+    setVerifying(true);
+    try {
+      await verifyOtp(email, otp);
+      onSuccess?.();
+    } catch (err) {
+      setOtpError(err instanceof Error ? err.message : "Verification failed");
+    } finally {
+      setVerifying(false);
+    }
+  };
+
+  const handleResend = async () => {
+    setResendLoading(true);
+    setResendMessage("");
+    try {
+      await fetch(`${API_URL}/api/auth/resend-verification`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      setResendMessage("New code sent. Check your inbox.");
+    } catch {
+      setResendMessage("Could not resend. Please try again.");
+    } finally {
+      setResendLoading(false);
+    }
+  };
+
+  if (step === "otp") {
+    return (
+      <div className="space-y-5">
+        <div className="text-center space-y-1">
+          <p className="text-sm text-muted-foreground">
+            We sent a 6-digit code to
+          </p>
+          <p className="text-sm font-medium text-foreground">{email}</p>
+        </div>
+
+        <form onSubmit={handleVerify} className="space-y-4">
+          <OtpInput value={otp} onChange={setOtp} />
+
+          <Button type="submit" className="w-full" disabled={verifying || otp.length !== 6}>
+            {verifying ? "Verifying..." : "Verify"}
+          </Button>
+
+          {otpError && <p className="text-sm text-destructive text-center">{otpError}</p>}
+        </form>
+
+        <div className="text-center text-xs text-muted-foreground space-y-1">
+          <p>
+            Didn&apos;t receive the code?{" "}
+            <button
+              type="button"
+              onClick={handleResend}
+              disabled={resendLoading}
+              className="font-medium text-primary underline-offset-4 hover:underline disabled:opacity-50"
+            >
+              {resendLoading ? "Sending..." : "Resend"}
+            </button>
+          </p>
+          {resendMessage && <p>{resendMessage}</p>}
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      {success && (
-        <div className="rounded-lg bg-success/10 p-3 text-sm text-success">
-          Account created! Redirecting...
+    <div className="space-y-5">
+      <GoogleSignInButton />
+
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t border-border" />
         </div>
-      )}
-      {errors.form && (
-        <div className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">
-          {errors.form}
+        <div className="relative flex justify-center text-xs uppercase tracking-wider">
+          <span className="bg-card px-3 text-muted-foreground">Or with email</span>
         </div>
-      )}
-
-      <div className="space-y-2">
-        <label htmlFor="name" className="text-sm font-medium">
-          Name
-        </label>
-        <Input
-          id="name"
-          type="text"
-          placeholder="Your name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        {errors.name && (
-          <p className="text-sm text-destructive">{errors.name}</p>
-        )}
       </div>
 
-      <div className="space-y-2">
-        <label htmlFor="email" className="text-sm font-medium">
-          Email
-        </label>
-        <Input
-          id="email"
-          type="email"
-          placeholder="you@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        {errors.email && (
-          <p className="text-sm text-destructive">{errors.email}</p>
-        )}
-      </div>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-2 gap-3">
+          <div className="space-y-1.5">
+            <label htmlFor="firstName" className="text-sm font-medium text-foreground">
+              First Name
+            </label>
+            <div className="relative">
+              <UserIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+              <Input
+                id="firstName"
+                type="text"
+                autoComplete="given-name"
+                placeholder="John"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="pl-9"
+              />
+            </div>
+            {errors.firstName && (
+              <p className="text-xs text-destructive">{errors.firstName}</p>
+            )}
+          </div>
+          <div className="space-y-1.5">
+            <label htmlFor="lastName" className="text-sm font-medium text-foreground">
+              Last Name
+            </label>
+            <Input
+              id="lastName"
+              type="text"
+              autoComplete="family-name"
+              placeholder="Doe"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+            {errors.lastName && (
+              <p className="text-xs text-destructive">{errors.lastName}</p>
+            )}
+          </div>
+        </div>
 
-      <div className="space-y-2">
-        <label htmlFor="password" className="text-sm font-medium">
-          Password
-        </label>
-        <Input
-          id="password"
-          type="password"
-          placeholder="Create a password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {errors.password ? (
-          <p className="text-sm text-destructive">{errors.password}</p>
-        ) : (
-          <p className="text-xs text-muted-foreground">
-            Min 8 characters with uppercase, lowercase, and a number
-          </p>
-        )}
-      </div>
+        <div className="space-y-1.5">
+          <label htmlFor="email" className="text-sm font-medium text-foreground">
+            Email
+          </label>
+          <div className="relative">
+            <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+            <Input
+              id="email"
+              type="email"
+              autoComplete="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="pl-9"
+            />
+          </div>
+          {errors.email && (
+            <p className="text-xs text-destructive">{errors.email}</p>
+          )}
+        </div>
 
-      <div className="space-y-2">
-        <label htmlFor="confirmPassword" className="text-sm font-medium">
-          Confirm Password
-        </label>
-        <Input
-          id="confirmPassword"
-          type="password"
-          placeholder="Confirm your password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-        {errors.confirmPassword && (
-          <p className="text-sm text-destructive">
-            {errors.confirmPassword}
-          </p>
-        )}
-      </div>
+        <div className="space-y-1.5">
+          <label htmlFor="password" className="text-sm font-medium text-foreground">
+            Password
+          </label>
+          <div className="relative">
+            <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+            <Input
+              id="password"
+              type="password"
+              autoComplete="new-password"
+              placeholder="Create a password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="pl-9"
+            />
+          </div>
+          {errors.password ? (
+            <p className="text-xs text-destructive">{errors.password}</p>
+          ) : (
+            <p className="text-xs text-muted-foreground">
+              Min 8 chars, with uppercase, lowercase, and a number
+            </p>
+          )}
+        </div>
 
-      <Button type="submit" className="w-full" disabled={isLoading || success}>
-        {isLoading
-          ? "Creating account..."
-          : success
-            ? "Redirecting..."
-            : "Create Account"}
-      </Button>
+        <div className="space-y-1.5">
+          <label htmlFor="confirmPassword" className="text-sm font-medium text-foreground">
+            Confirm Password
+          </label>
+          <div className="relative">
+            <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+            <Input
+              id="confirmPassword"
+              type="password"
+              autoComplete="new-password"
+              placeholder="Confirm your password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="pl-9"
+            />
+          </div>
+          {errors.confirmPassword && (
+            <p className="text-xs text-destructive">{errors.confirmPassword}</p>
+          )}
+        </div>
+
+        <Button type="submit" className="w-full" disabled={isLoading}>
+          {isLoading ? "Creating account..." : "Create Account"}
+        </Button>
+
+        {errors.form && <p className="text-sm text-destructive text-center">{errors.form}</p>}
+      </form>
 
       <p className="text-center text-sm text-muted-foreground">
         Already have an account?{" "}
         <button
           type="button"
           onClick={onSwitchToLogin}
-          className="text-primary underline-offset-4 hover:underline"
+          className="font-medium text-primary underline-offset-4 hover:underline"
         >
-          Sign In
+          Sign in
         </button>
       </p>
-    </form>
+    </div>
   );
 }

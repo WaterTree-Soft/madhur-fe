@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { Leaf, Heart, Truck, ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,10 +9,10 @@ import { fetchCategories } from "@/features/categories/actions/category-actions"
 import { fetchProducts } from "@/features/products/actions/product-actions";
 import { fetchTestimonials } from "@/features/testimonials/actions/testimonial-actions";
 import { FadeUp, StaggerContainer, StaggerItem } from "@/components/ui/motion";
-import { fetchAPI, type StrapiResponse } from "@/lib/strapi";
 import { Mandala } from "@/components/ui/mandala";
 import { TestimonialsCarousel } from "@/components/ui/testimonials-carousel";
-import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
+import { HeroBackgroundCarousel } from "@/components/ui/hero-background-carousel";
+import { API_URL, SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: `Madhur Sweet (Madhur Sweets) — Authentic Namkeen & Indian Sweets Online`,
@@ -29,18 +28,17 @@ export const metadata: Metadata = {
   },
 };
 
-async function fetchHeroImage(): Promise<string | null> {
+async function fetchHeroImages(): Promise<string[]> {
   try {
-    const res = await fetchAPI<StrapiResponse<{ heroImage?: { url?: string } | null }>>(
-      "/site-setting?populate=heroImage",
-      { next: { revalidate: 3600, tags: ["site-settings"] } }
-    );
-    const url = res?.data?.heroImage?.url;
-    if (!url) return null;
-    const base = process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
-    return url.startsWith("http") ? url : `${base}${url}`;
+    const res = await fetch(`${API_URL}/api/settings`, {
+      next: { revalidate: 60, tags: ["site-settings"] },
+    });
+    if (!res.ok) return [];
+    const json = await res.json();
+    const images = json?.data?.heroImages;
+    return Array.isArray(images) ? images.filter((u) => typeof u === "string") : [];
   } catch {
-    return null;
+    return [];
   }
 }
 
@@ -125,10 +123,10 @@ const websiteJsonLd = {
 };
 
 export default async function HomePage() {
-  const [categories, products, heroImageUrl, testimonials] = await Promise.all([
+  const [categories, products, heroImages, testimonials] = await Promise.all([
     fetchCategories(),
     fetchProducts(),
-    fetchHeroImage(),
+    fetchHeroImages(),
     fetchTestimonials(),
   ]);
 
@@ -145,17 +143,8 @@ export default async function HomePage() {
       {/* Hero */}
       <section className="relative flex min-h-[calc(100svh-4rem)] items-center justify-center overflow-hidden">
         {/* Background */}
-        {heroImageUrl ? (
-          <>
-            <Image
-              src={heroImageUrl}
-              alt="Madhur Namkeen hero"
-              fill
-              className="object-cover"
-              priority
-            />
-            <div className="absolute inset-0 bg-linear-to-b from-black/65 via-black/45 to-black/70" />
-          </>
+        {heroImages.length > 0 ? (
+          <HeroBackgroundCarousel images={heroImages} />
         ) : (
           <>
             <div className="absolute inset-0 bg-linear-to-br from-[#1c0400] via-[#4a0d00] to-[#8b3000]" />

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Star, ShieldCheck, Leaf, Clock } from "lucide-react";
+import { Star, ShieldCheck, Leaf, Clock, ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { QuantitySelector } from "@/components/ui/quantity-selector";
@@ -59,6 +59,14 @@ export function ProductDetail({ product }: ProductDetailProps) {
     if (!el) return;
     el.scrollTo({ left: index * el.clientWidth, behavior: "smooth" });
     setSelectedImage(index);
+  };
+
+  const goToPrev = () => {
+    setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  const goToNext = () => {
+    setSelectedImage((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
 
   return (
@@ -135,14 +143,39 @@ export function ProductDetail({ product }: ProductDetailProps) {
               unoptimized
             />
             {!product.inStock && (
-              <Badge variant="destructive" className="absolute left-4 top-4 text-sm shadow-sm">
+              <Badge variant="destructive" className="absolute left-4 top-4 text-sm shadow-sm z-10">
                 Out of Stock
               </Badge>
             )}
             {discountPercent > 0 && (
-              <Badge className="absolute right-4 top-4 text-sm bg-linear-to-r from-secondary to-[#ff7722] text-white border-0 shadow-[0_3px_10px_rgba(255,153,51,0.4)]">
+              <Badge className="absolute right-4 top-4 text-sm bg-linear-to-r from-secondary to-[#ff7722] text-white border-0 shadow-[0_3px_10px_rgba(255,153,51,0.4)] z-10">
                 {discountPercent}% OFF
               </Badge>
+            )}
+
+            {images.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={goToPrev}
+                  aria-label="Previous image"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-foreground shadow-md backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={goToNext}
+                  aria-label="Next image"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-foreground shadow-md backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 rounded-full bg-black/60 px-2.5 py-0.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                  {selectedImage + 1} / {images.length}
+                </div>
+              </>
             )}
           </div>
 

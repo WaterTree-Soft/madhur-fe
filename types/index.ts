@@ -3,7 +3,9 @@ export type Role = "super_admin" | "admin" | "user";
 export interface User {
   id: string;
   email: string;
-  name: string;
+  firstName: string;
+  lastName: string;
+  name: string; // virtual: firstName + " " + lastName
   role: Role;
   avatar?: string;
   createdAt: string;

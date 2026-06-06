@@ -4,7 +4,8 @@ export interface LoginFormData {
 }
 
 export interface RegisterFormData {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -19,7 +20,9 @@ export interface AuthState {
   openLoginDialog: () => void;
   closeLoginDialog: () => void;
   login: (data: LoginFormData) => Promise<void>;
+  loginWithGoogle: (credential: string) => Promise<void>;
   register: (data: RegisterFormData) => Promise<void>;
+  verifyOtp: (email: string, otp: string) => Promise<void>;
   logout: () => void;
   setUser: (user: import("@/types").User | null) => void;
   rehydrate: () => Promise<void>;
