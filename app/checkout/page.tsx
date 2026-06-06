@@ -82,6 +82,13 @@ export default function CheckoutPage() {
     return () => clearTimeout(t);
   }, [orderPlaced, countdown, router]);
 
+  // Scroll to top when the order-confirmed view appears
+  useEffect(() => {
+    if (orderPlaced && typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [orderPlaced]);
+
   // Pick a default selected address once saved list arrives.
   useEffect(() => {
     if (!mounted || selectedAddressId) return;
@@ -124,21 +131,21 @@ export default function CheckoutPage() {
 
   if (orderPlaced) {
     return (
-      <div className="mx-auto flex min-h-[calc(100svh-4rem)] w-full max-w-4xl flex-col justify-center px-4 py-16 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-3xl border border-green-200/70 bg-linear-to-br from-white via-green-50/70 to-emerald-50 px-6 py-16 text-center shadow-[0_25px_70px_-20px_rgba(16,185,129,0.35)] dark:border-emerald-900/40 dark:from-background dark:via-emerald-950/20 dark:to-background">
+      <div className="mx-auto flex min-h-[calc(100svh-4rem)] w-full max-w-4xl flex-col justify-center px-4 py-8 sm:px-6 sm:py-16 lg:px-8">
+        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-green-200/70 bg-linear-to-br from-white via-green-50/70 to-emerald-50 px-4 py-10 sm:px-6 sm:py-16 text-center shadow-[0_15px_40px_-15px_rgba(16,185,129,0.35)] sm:shadow-[0_25px_70px_-20px_rgba(16,185,129,0.35)] dark:border-emerald-900/40 dark:from-background dark:via-emerald-950/20 dark:to-background">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.18),transparent_60%)]" />
 
-          <Sparkles className="success-sparkle pointer-events-none absolute left-8 top-10 h-5 w-5 text-amber-400" style={{ animationDelay: "0s" }} />
-          <Sparkles className="success-sparkle pointer-events-none absolute right-10 top-16 h-6 w-6 text-emerald-400" style={{ animationDelay: "0.6s" }} />
-          <Sparkles className="success-sparkle pointer-events-none absolute bottom-12 left-16 h-4 w-4 text-emerald-500" style={{ animationDelay: "1.2s" }} />
-          <Sparkles className="success-sparkle pointer-events-none absolute bottom-16 right-14 h-5 w-5 text-amber-400" style={{ animationDelay: "0.3s" }} />
+          <Sparkles className="success-sparkle pointer-events-none absolute left-3 top-6 h-3.5 w-3.5 sm:left-8 sm:top-10 sm:h-5 sm:w-5 text-amber-400" style={{ animationDelay: "0s" }} />
+          <Sparkles className="success-sparkle pointer-events-none absolute right-3 top-10 h-4 w-4 sm:right-10 sm:top-16 sm:h-6 sm:w-6 text-emerald-400" style={{ animationDelay: "0.6s" }} />
+          <Sparkles className="success-sparkle pointer-events-none absolute bottom-8 left-6 h-3 w-3 sm:bottom-12 sm:left-16 sm:h-4 sm:w-4 text-emerald-500" style={{ animationDelay: "1.2s" }} />
+          <Sparkles className="success-sparkle pointer-events-none absolute bottom-10 right-5 h-3.5 w-3.5 sm:bottom-16 sm:right-14 sm:h-5 sm:w-5 text-amber-400" style={{ animationDelay: "0.3s" }} />
 
-          <div className="relative mx-auto flex h-28 w-28 items-center justify-center">
+          <div className="relative mx-auto flex h-20 w-20 sm:h-28 sm:w-28 items-center justify-center">
             <span className="success-ring-pulse absolute inset-0 rounded-full bg-emerald-500/30" />
             <span className="success-ring absolute inset-0 rounded-full bg-linear-to-br from-emerald-400 to-green-600 shadow-[0_10px_30px_rgba(16,185,129,0.45)]" />
             <svg
               viewBox="0 0 52 52"
-              className="relative h-16 w-16 text-white"
+              className="relative h-12 w-12 sm:h-16 sm:w-16 text-white"
               fill="none"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -152,32 +159,32 @@ export default function CheckoutPage() {
             </svg>
           </div>
 
-          <h1 className="relative mt-8 text-4xl font-bold tracking-tight sm:text-5xl">
+          <h1 className="relative mt-5 sm:mt-8 text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight">
             Order Placed!
           </h1>
-          <p className="relative mx-auto mt-3 max-w-md text-muted-foreground">
+          <p className="relative mx-auto mt-2 sm:mt-3 max-w-md text-sm sm:text-base text-muted-foreground px-2">
             Thank you for shopping with us. Your sweets are being prepared —
             we&apos;ll send a confirmation shortly.
           </p>
 
           {orderId && (
-            <div className="relative mx-auto mt-5 inline-flex items-center gap-2 rounded-full border border-emerald-200/80 bg-white/70 px-4 py-2 text-sm shadow-sm backdrop-blur dark:border-emerald-900/40 dark:bg-background/60">
-              <PackageCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-              <span className="text-muted-foreground">Order ID</span>
-              <span className="font-mono font-semibold text-foreground">
+            <div className="relative mx-auto mt-4 sm:mt-5 inline-flex max-w-full items-center gap-1.5 sm:gap-2 rounded-full border border-emerald-200/80 bg-white/70 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm shadow-sm backdrop-blur dark:border-emerald-900/40 dark:bg-background/60">
+              <PackageCheck className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+              <span className="text-muted-foreground shrink-0">Order ID</span>
+              <span className="font-mono font-semibold text-foreground truncate">
                 {orderId}
               </span>
             </div>
           )}
 
-          <p className="relative mt-6 text-sm text-muted-foreground">
+          <p className="relative mt-5 sm:mt-6 text-xs sm:text-sm text-muted-foreground">
             Redirecting to your orders in{" "}
             <span className="font-semibold tabular-nums text-foreground">{countdown}s</span>
             …
           </p>
 
           <div className="relative mt-4 flex justify-center">
-            <Button asChild size="lg" variant="outline">
+            <Button asChild size="default" variant="outline" className="sm:h-11">
               <Link href="/products">Continue Shopping</Link>
             </Button>
           </div>

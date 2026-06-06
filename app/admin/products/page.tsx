@@ -104,7 +104,16 @@ export default function AdminProductsPage() {
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium tabular-nums">{formatPrice(product.price)}</span>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-sm font-semibold tabular-nums">
+                        {formatPrice(product.discountPrice ?? product.price)}
+                      </span>
+                      {product.discountPrice != null && product.discountPrice < product.price && (
+                        <span className="text-xs text-muted-foreground line-through tabular-nums">
+                          {formatPrice(product.price)}
+                        </span>
+                      )}
+                    </div>
                     <div className="flex gap-1">
                       <Button variant="ghost" size="icon" className="h-8 w-8"
                         onClick={() => { setEditing(product); setDialogOpen(true); }}
@@ -142,7 +151,18 @@ export default function AdminProductsPage() {
                     <tr key={product.id} className="hover:bg-muted/50">
                       <td className="p-4 font-medium">{product.name}</td>
                       <td className="p-4 text-muted-foreground">{product.category?.name ?? "—"}</td>
-                      <td className="p-4 tabular-nums">{formatPrice(product.price)}</td>
+                      <td className="p-4 tabular-nums">
+                        <div className="flex items-baseline gap-2">
+                          <span className="font-medium">
+                            {formatPrice(product.discountPrice ?? product.price)}
+                          </span>
+                          {product.discountPrice != null && product.discountPrice < product.price && (
+                            <span className="text-xs text-muted-foreground line-through">
+                              {formatPrice(product.price)}
+                            </span>
+                          )}
+                        </div>
+                      </td>
                       <td className="p-4">
                         <Badge variant={product.inStock ? "success" : "destructive"} className="text-xs px-2">
                           {product.inStock ? "In Stock" : "Out of Stock"}
