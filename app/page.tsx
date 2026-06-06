@@ -15,14 +15,14 @@ import { HeroBackgroundCarousel } from "@/components/ui/hero-background-carousel
 import { API_URL, SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `Madhur Sweet (Madhur Sweets) — Authentic Namkeen & Indian Sweets Online`,
+  title: `Madhur Sweet (Madhur Sweets) — Biscuits, Cakes, Pastries, Rusk & Namkeen Online`,
   description:
-    "Madhur Sweet (also known as Madhur Sweets / Madhursweet) — order authentic namkeen, bhujia, chakli, sev, mathri, ladoo, kaju katli and traditional Indian mithai online. Handcrafted in Old Delhi since 1965 with pure desi ghee. Fresh delivery across India.",
+    "Madhur Sweet (also known as Madhur Sweets / Madhursweet) — order freshly baked biscuits, cakes, pastries, rusk and all kinds of namkeen online. Baked in Pali, Rajasthan since 1965. Fresh delivery across India.",
   alternates: { canonical: SITE_URL },
   openGraph: {
-    title: `Madhur Sweet (Madhur Sweets) — Authentic Namkeen & Indian Sweets Online`,
+    title: `Madhur Sweet (Madhur Sweets) — Biscuits, Cakes, Pastries, Rusk & Namkeen Online`,
     description:
-      "Madhur Sweet — premium namkeen and Indian sweets handcrafted in Old Delhi since 1965. Order bhujia, chakli, sev, ladoo, barfi and more online with fast delivery across India.",
+      "Madhur Sweet — premium biscuits, cakes, pastries, rusk and namkeen baked fresh in Pali, Rajasthan since 1965. Fast delivery across India.",
     url: SITE_URL,
     type: "website",
   },
@@ -93,14 +93,14 @@ const organizationJsonLd = {
     name: "India",
   },
   knowsAbout: [
-    "Indian Sweets",
+    "Biscuits",
+    "Cakes",
+    "Pastries",
+    "Rusk",
     "Namkeen",
-    "Mithai",
-    "Traditional Indian Snacks",
-    "Bhujia",
-    "Ladoo",
-    "Barfi",
-    "Chakli",
+    "Indian Bakery",
+    "Indian Snacks",
+    "Traditional Indian Sweets",
   ],
 };
 
@@ -158,13 +158,13 @@ export default async function HomePage() {
           <FadeUp>
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm px-4 py-1.5 sm:px-5 sm:py-2 text-xs sm:text-sm font-medium text-white/90 mb-6 sm:mb-8">
               <Sparkles className="h-3.5 w-3.5 text-accent" />
-              Premium Namkeen &amp; Snacks
+              Bakery &amp; Namkeen
             </div>
           </FadeUp>
 
           <FadeUp delay={0.1}>
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.12] tracking-tight text-white [font-family:var(--font-fraunces)]">
-              Authentic Namkeen,
+              Freshly Baked,
               <br />
               <span className="bg-linear-to-r from-[#f5c518] via-[#ffaa00] to-[#f5c518] bg-clip-text text-transparent">
                 Bold Every Bite.
@@ -174,8 +174,8 @@ export default async function HomePage() {
 
           <FadeUp delay={0.2}>
             <p className="mt-5 sm:mt-7 text-sm sm:text-base md:text-xl text-white/70 max-w-xl mx-auto leading-relaxed">
-              From aloo bhujia to chakli — every crunch carries the warmth of
-              generations-old recipes, made with handpicked spices daily.
+              Biscuits, cakes, pastries, rusk, and all kinds of namkeen — every
+              bite carries the warmth of generations-old recipes, made fresh daily.
             </p>
           </FadeUp>
 
@@ -187,7 +187,7 @@ export default async function HomePage() {
                 className="h-12 px-8 text-base bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/30 hover:shadow-xl hover:shadow-accent/40 transition-all duration-300"
               >
                 <Link href="/products">
-                  Shop Namkeen <ArrowRight className="ml-2 h-5 w-5" />
+                  Shop Now <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
               <Button
@@ -215,7 +215,7 @@ export default async function HomePage() {
                 Explore Our Collection
               </h2>
               <p className="mt-4 text-sm sm:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
-                Bhujia, mixture, chakli and more — find your favourite crunch
+                Cakes, pastries, biscuits, rusk, namkeen and more — pick your favourite
               </p>
             </div>
           </FadeUp>
@@ -239,10 +239,10 @@ export default async function HomePage() {
                 Bestsellers
               </p>
               <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-primary tracking-tight">
-                Most Loved Namkeen
+                Most Loved Bestsellers
               </h2>
               <p className="mt-4 text-sm sm:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
-                Our bestselling snacks — handpicked and fresh every day
+                Our most-loved bakes and namkeen — handpicked and fresh every day
               </p>
             </div>
           </FadeUp>
@@ -276,13 +276,13 @@ export default async function HomePage() {
                 icon: Leaf,
                 title: "Fresh Daily",
                 description:
-                  "Every batch of namkeen is prepared fresh daily with handpicked spices. No preservatives, no compromises.",
+                  "Every batch — biscuits, cakes, rusk, namkeen — is prepared fresh daily with handpicked ingredients. No preservatives, no compromises.",
               },
               {
                 icon: Heart,
                 title: "Traditional Recipes",
                 description:
-                  "Recipes passed down through generations, preserving the authentic crunch and spice of Indian namkeen.",
+                  "Recipes passed down through generations, preserving the authentic flavour of Indian bakery and namkeen.",
               },
               {
                 icon: Truck,
@@ -322,10 +322,10 @@ export default async function HomePage() {
                 Loved by thousands
               </p>
               <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-primary tracking-tight">
-                Ready for the perfect crunch?
+                Ready for the perfect bite?
               </h2>
               <p className="mt-4 sm:mt-6 text-sm sm:text-base text-muted-foreground max-w-lg mx-auto leading-relaxed">
-                Order your favourite namkeen today and taste the magic of Madhur — fresh, bold, and delivered to your door.
+                Order your favourite bakes and namkeen today and taste the magic of Madhur — fresh, bold, and delivered to your door.
               </p>
             </div>
           </FadeUp>

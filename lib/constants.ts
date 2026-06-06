@@ -1,6 +1,6 @@
 export const SITE_NAME = "Madhur Sweet";
 export const SITE_DESCRIPTION =
-  "Premium Indian sweets and snacks, crafted with love and tradition.";
+  "Biscuits, cakes, pastries, rusk, and all kinds of namkeen — freshly baked and crafted with love and tradition.";
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://madhursweet.com";
 export const WHATSAPP_NUMBER = "919999999999";

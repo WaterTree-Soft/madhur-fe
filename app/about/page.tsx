@@ -19,12 +19,12 @@ async function getContent(): Promise<string | null> {
 export const metadata: Metadata = {
   title: "About Us",
   description:
-    "Learn about Madhur Sweet — a legacy of authentic Indian namkeen and sweets since 1965. Crafted with pure desi ghee, handpicked spices, and generations-old recipes.",
+    "Learn about Madhur Sweet — a legacy of authentic Indian biscuits, cakes, pastries, rusk and namkeen since 1965. Baked fresh in Pali, Rajasthan with handpicked ingredients and generations-old recipes.",
   alternates: { canonical: "/about" },
   openGraph: {
     title: "About Us | Madhur Sweet",
     description:
-      "Learn about Madhur Sweet — a legacy of authentic Indian namkeen and sweets since 1965. Crafted with pure desi ghee, handpicked spices, and generations-old recipes.",
+      "Learn about Madhur Sweet — a legacy of authentic Indian biscuits, cakes, pastries, rusk and namkeen since 1965. Baked fresh in Pali, Rajasthan with handpicked ingredients and generations-old recipes.",
     url: "/about",
   },
 };
@@ -60,10 +60,11 @@ export default async function AboutPage() {
           <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 text-primary">Our Story</h2>
           <div className="space-y-4 sm:space-y-5 text-sm text-foreground/85 leading-relaxed">
             <p>
-              {SITE_NAME} began as a small sweet shop in the heart of Old Delhi
-              in 1965. Founded by Shri Madhur Lal Ji, our journey started with a
-              simple mission: to bring the authentic taste of traditional Indian
-              sweets to every household.
+              {SITE_NAME} began as a small bakery and sweet shop in Pali,
+              Rajasthan in 1965. Founded by Shri Gangavishan Agarwal, our journey
+              started with a simple mission: to bring the authentic taste of
+              freshly baked biscuits, cakes, pastries, rusk and traditional
+              namkeen to every household.
             </p>
             <p>
               Over six decades, we have grown from a single shop to a beloved
@@ -72,9 +73,10 @@ export default async function AboutPage() {
               preserving the essence of tradition.
             </p>
             <p>
-              Today, {SITE_NAME} is synonymous with quality, purity, and taste.
-              We continue to use pure desi ghee, hand-selected dry fruits, and
-              time-honored techniques that make our sweets truly special.
+              Today, {SITE_NAME} is synonymous with quality, freshness, and
+              taste. We continue to use hand-selected ingredients and
+              time-honored techniques that make every bite — from our flaky
+              biscuits and soft cakes to our crunchy namkeen — truly special.
             </p>
           </div>
         </section>
