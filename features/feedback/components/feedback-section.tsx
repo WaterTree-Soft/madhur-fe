@@ -41,20 +41,27 @@ export function FeedbackSection({ productId }: FeedbackSectionProps) {
         })
       );
 
-      const mapped: Feedback[] = list.map((f) => ({
-        id: String(f.id),
-        productId: f.productId,
-        rating: f.rating,
-        comment: f.comment,
-        createdAt: f.createdAt,
-        user: {
-          id: String(f.user?.id ?? ""),
-          name: f.user?.username ?? "Anonymous",
-          email: f.user?.email ?? "",
-          role: "user",
+      const mapped: Feedback[] = list.map((f) => {
+        const fullName = f.user?.username ?? "Anonymous";
+        const [firstName = fullName, ...rest] = fullName.split(" ");
+        const lastName = rest.join(" ");
+        return {
+          id: String(f.id),
+          productId: f.productId,
+          rating: f.rating,
+          comment: f.comment,
           createdAt: f.createdAt,
-        },
-      }));
+          user: {
+            id: String(f.user?.id ?? ""),
+            firstName,
+            lastName,
+            name: fullName,
+            email: f.user?.email ?? "",
+            role: "user",
+            createdAt: f.createdAt,
+          },
+        };
+      });
 
       setFeedbacks(mapped);
     } catch {
