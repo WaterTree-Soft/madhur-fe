@@ -319,3 +319,26 @@ h1, h2, h3, h4, h5, h6 {
     animation: none;
   }
 }
+
+/* ============================================
+   Google Sign-In button — force responsive width
+   The GoogleLogin iframe ships with inline width.
+   These rules win against it because of !important.
+   ============================================ */
+.google-btn-responsive {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.google-btn-responsive > div {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.google-btn-responsive iframe {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}

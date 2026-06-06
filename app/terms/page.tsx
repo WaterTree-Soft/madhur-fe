@@ -23,17 +23,17 @@ export const metadata: Metadata = {
 export default async function TermsPage() {
   const content = await getContent();
   return (
-    <div className="mx-auto max-w-3xl px-4 py-16">
-      <h1 className="text-4xl font-bold mb-8">Terms of Service</h1>
+    <div className="mx-auto max-w-3xl px-4 sm:px-6 py-8 sm:py-12 md:py-16">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 md:mb-8">Terms of Service</h1>
 
       {content ? (
-        <div className="space-y-4 text-foreground/90 leading-relaxed whitespace-pre-wrap">{content}</div>
+        <div className="space-y-4 text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap">{content}</div>
       ) : (
       <>
-      <p className="text-muted-foreground mb-8">Last updated: April 1, 2026</p>
-      <div className="space-y-8 text-foreground/90 leading-relaxed">
+      <p className="text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-8">Last updated: April 1, 2026</p>
+      <div className="space-y-6 sm:space-y-8 text-sm text-foreground/90 leading-relaxed">
         <section>
-          <h2 className="text-2xl font-semibold mb-4">Agreement to Terms</h2>
+          <h2 className="text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3">Agreement to Terms</h2>
           <p>
             By accessing or using the {SITE_NAME} website and services, you
             agree to be bound by these Terms of Service. If you do not agree to
@@ -42,7 +42,7 @@ export default async function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold mb-4">Use of Service</h2>
+          <h2 className="text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3">Use of Service</h2>
           <p>
             You must be at least 18 years old to use our services. You agree to
             provide accurate and complete information when creating an account or
@@ -52,7 +52,7 @@ export default async function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold mb-4">Orders & Payments</h2>
+          <h2 className="text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3">Orders & Payments</h2>
           <p>
             All orders are subject to acceptance and availability. Prices are
             listed in Indian Rupees (INR) and include applicable taxes. We
@@ -62,7 +62,7 @@ export default async function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold mb-4">Shipping</h2>
+          <h2 className="text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3">Shipping</h2>
           <p>
             We offer delivery across India. Delivery times vary based on your
             location and are provided as estimates. {SITE_NAME} is not liable
@@ -71,7 +71,7 @@ export default async function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold mb-4">Returns & Refunds</h2>
+          <h2 className="text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3">Returns & Refunds</h2>
           <p>
             Due to the perishable nature of our products, we accept returns only
             for damaged or incorrect items. Please contact us within 24 hours of
@@ -81,7 +81,7 @@ export default async function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold mb-4">
+          <h2 className="text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3">
             Limitation of Liability
           </h2>
           <p>

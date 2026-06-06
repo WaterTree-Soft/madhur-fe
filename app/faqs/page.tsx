@@ -21,13 +21,13 @@ async function getContent(): Promise<string | null> {
 export default async function FaqsPage() {
   const content = await getContent();
   return (
-    <div className="mx-auto max-w-3xl px-4 py-16">
-      <h1 className="text-4xl font-bold mb-8">Frequently Asked Questions</h1>
+    <div className="mx-auto max-w-3xl px-4 sm:px-6 py-8 sm:py-12 md:py-16">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 md:mb-8">Frequently Asked Questions</h1>
 
       {content ? (
-        <div className="space-y-4 text-foreground/90 leading-relaxed whitespace-pre-wrap">{content}</div>
+        <div className="space-y-4 text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap">{content}</div>
       ) : (
-        <div className="space-y-8 text-foreground/90 leading-relaxed">
+        <div className="space-y-6 sm:space-y-8 text-sm text-foreground/90 leading-relaxed">
           {[
             {
               q: "How fresh are your sweets?",
@@ -55,7 +55,7 @@ export default async function FaqsPage() {
             },
           ].map(({ q, a }) => (
             <section key={q}>
-              <h2 className="text-xl font-semibold mb-2 text-primary">{q}</h2>
+              <h2 className="text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 text-primary">{q}</h2>
               <p>{a}</p>
             </section>
           ))}

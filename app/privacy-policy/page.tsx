@@ -26,21 +26,21 @@ export default async function PrivacyPolicyPage() {
   const content = await getPolicy();
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-16">
-      <h1 className="text-4xl font-bold mb-8">Privacy Policy</h1>
+    <div className="mx-auto max-w-3xl px-4 sm:px-6 py-8 sm:py-12 md:py-16">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 md:mb-8">Privacy Policy</h1>
 
       {content ? (
-        <div className="space-y-4 text-foreground/90 leading-relaxed whitespace-pre-wrap">
+        <div className="space-y-4 text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap">
           {content}
         </div>
       ) : (
         <>
-          <p className="text-muted-foreground mb-8">
+          <p className="text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-8">
             Last updated: April 1, 2026
           </p>
-          <div className="space-y-8 text-foreground/90 leading-relaxed">
+          <div className="space-y-6 sm:space-y-8 text-sm text-foreground/90 leading-relaxed">
             <section>
-              <h2 className="text-2xl font-semibold mb-4">
+              <h2 className="text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3">
                 Information We Collect
               </h2>
               <p>
@@ -53,11 +53,11 @@ export default async function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold mb-4">
+              <h2 className="text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3">
                 How We Use Your Information
               </h2>
               <p>We use the information we collect to:</p>
-              <ul className="list-disc pl-6 mt-2 space-y-1">
+              <ul className="list-disc pl-5 mt-2 space-y-1">
                 <li>Process and fulfill your orders</li>
                 <li>Communicate with you about your orders and account</li>
                 <li>Send promotional offers and updates (with your consent)</li>
@@ -67,7 +67,7 @@ export default async function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold mb-4">Data Sharing</h2>
+              <h2 className="text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3">Data Sharing</h2>
               <p>
                 We do not sell your personal information. We may share your data with
                 trusted third-party service providers who assist us in operating our
@@ -77,7 +77,7 @@ export default async function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold mb-4">Cookies</h2>
+              <h2 className="text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3">Cookies</h2>
               <p>
                 We use cookies and similar tracking technologies to enhance your
                 browsing experience, analyze site traffic, and personalize content.
@@ -86,7 +86,7 @@ export default async function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold mb-4">Your Rights</h2>
+              <h2 className="text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3">Your Rights</h2>
               <p>
                 You have the right to access, correct, or delete your personal
                 information. You may also opt out of marketing communications at any
@@ -96,12 +96,12 @@ export default async function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold mb-4">Contact Us</h2>
+              <h2 className="text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3">Contact Us</h2>
               <p>
                 If you have questions about this Privacy Policy, please contact us at{" "}
                 <a
                   href="mailto:privacy@madhursweet.com"
-                  className="text-primary underline"
+                  className="text-primary underline break-all"
                 >
                   privacy@madhursweet.com
                 </a>

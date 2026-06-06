@@ -50,10 +50,10 @@ export default async function CareersPage() {
         <p className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-secondary mb-3">
           Join Our Team
         </p>
-        <h1 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
           Careers at Madhur Sweet
         </h1>
-        <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+        <p className="text-muted-foreground max-w-2xl mx-auto text-sm leading-relaxed">
           Join our family of passionate sweet makers and help us spread sweetness
           across India. We offer a supportive work environment, competitive
           salaries, and growth opportunities.
@@ -61,7 +61,7 @@ export default async function CareersPage() {
       </div>
 
       {content ? (
-        <div className="space-y-4 text-foreground/90 leading-relaxed whitespace-pre-wrap text-sm sm:text-base">
+        <div className="space-y-4 text-foreground/90 leading-relaxed whitespace-pre-wrap text-sm">
           {content}
         </div>
       ) : jobs.length > 0 ? (
@@ -70,7 +70,7 @@ export default async function CareersPage() {
             <Card key={job.id} className="transition-shadow hover:shadow-md">
               <CardHeader className="pb-3 sm:pb-4">
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                  <CardTitle className="text-lg sm:text-xl leading-snug">
+                  <CardTitle className="text-base sm:text-lg leading-snug">
                     {job.title}
                   </CardTitle>
                   <div className="flex flex-wrap gap-2 shrink-0">

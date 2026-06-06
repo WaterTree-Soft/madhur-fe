@@ -32,23 +32,23 @@ export const metadata: Metadata = {
 export default async function AboutPage() {
   const content = await getContent();
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-20">
       {content ? (
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary mb-8">About {SITE_NAME}</h1>
-          <div className="space-y-4 text-foreground/90 leading-relaxed whitespace-pre-wrap">{content}</div>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-primary mb-4 sm:mb-6 md:mb-8">About {SITE_NAME}</h1>
+          <div className="space-y-4 text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap">{content}</div>
         </div>
       ) : (
       <>
       <FadeUp>
-        <div className="text-center mb-16 md:mb-20">
-          <p className="text-sm font-semibold uppercase tracking-widest text-secondary mb-3">
+        <div className="text-center mb-10 sm:mb-14 md:mb-20">
+          <p className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-secondary mb-2 sm:mb-3">
             Our Story
           </p>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-tight text-primary">
             About {SITE_NAME}
           </h1>
-          <p className="text-muted-foreground mt-5 max-w-2xl mx-auto text-lg leading-relaxed">
+          <p className="text-muted-foreground mt-3 sm:mt-5 max-w-2xl mx-auto text-sm sm:text-base md:text-lg leading-relaxed">
             A legacy of sweetness, crafted with love since 1965.
           </p>
         </div>
@@ -56,9 +56,9 @@ export default async function AboutPage() {
 
       {/* Our Story */}
       <FadeUp>
-        <section className="mb-20 max-w-3xl mx-auto">
-          <h2 className="text-2xl font-semibold mb-6 text-primary">Our Story</h2>
-          <div className="space-y-5 text-foreground/85 leading-relaxed text-[0.95rem]">
+        <section className="mb-12 sm:mb-16 md:mb-20 max-w-3xl mx-auto">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-4 sm:mb-6 text-primary">Our Story</h2>
+          <div className="space-y-4 sm:space-y-5 text-sm text-foreground/85 leading-relaxed">
             <p>
               {SITE_NAME} began as a small sweet shop in the heart of Old Delhi
               in 1965. Founded by Shri Madhur Lal Ji, our journey started with a
@@ -81,11 +81,11 @@ export default async function AboutPage() {
       </FadeUp>
 
       {/* Values */}
-      <section className="mb-20">
+      <section className="mb-12 sm:mb-16 md:mb-20">
         <FadeUp>
-          <h2 className="text-2xl font-semibold mb-10 text-center text-primary">Our Values</h2>
+          <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-6 sm:mb-8 md:mb-10 text-center text-primary">Our Values</h2>
         </FadeUp>
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 md:gap-8">
           {[
             {
               icon: Award,
@@ -108,12 +108,12 @@ export default async function AboutPage() {
           ].map((value) => (
             <StaggerItem key={value.title}>
               <Card className="group text-center bg-linear-to-br from-[#faf6f0] to-[#f5e6d3] border-2 border-transparent shadow-sm hover:shadow-xl hover:-translate-y-2 hover:border-accent transition-all duration-400">
-                <CardContent className="pt-10 pb-8 px-8">
-                  <div className="mx-auto w-14 h-14 rounded-full bg-secondary/15 flex items-center justify-center mb-6 group-hover:bg-secondary/25 group-hover:scale-110 transition-all duration-300">
-                    <value.icon className="h-7 w-7 text-secondary" />
+                <CardContent className="pt-6 sm:pt-8 md:pt-10 pb-5 sm:pb-6 md:pb-8 px-5 sm:px-6 md:px-8">
+                  <div className="mx-auto w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-secondary/15 flex items-center justify-center mb-4 sm:mb-5 md:mb-6 group-hover:bg-secondary/25 group-hover:scale-110 transition-all duration-300">
+                    <value.icon className="h-6 w-6 sm:h-7 sm:w-7 text-secondary" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-3 text-primary">{value.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{value.description}</p>
+                  <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3 text-primary">{value.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{value.description}</p>
                 </CardContent>
               </Card>
             </StaggerItem>
@@ -122,26 +122,26 @@ export default async function AboutPage() {
       </section>
 
       {/* Team */}
-      <section>
+      {/* <section>
         <FadeUp>
-          <h2 className="text-2xl font-semibold mb-10 text-center text-primary">Our Team</h2>
+          <h2 className="text-lg sm:text-xl md:text-2xl font-semibold mb-6 sm:mb-8 md:mb-10 text-center text-primary">Our Team</h2>
         </FadeUp>
-        <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
           {["Founder & CEO", "Head Chef", "Operations Lead", "Marketing Head"].map(
             (role) => (
               <StaggerItem key={role}>
                 <Card className="group text-center bg-linear-to-br from-[#faf6f0] to-[#f5e6d3] border-2 border-transparent hover:shadow-lg hover:-translate-y-1 hover:border-accent transition-all duration-300">
-                  <CardContent className="p-6 pt-8">
-                    <div className="w-20 h-20 rounded-full bg-[#f5e6d3] mx-auto mb-4 group-hover:bg-[#f4e4c1] transition-colors duration-300" />
-                    <p className="font-semibold text-primary">Team Member</p>
-                    <p className="text-sm text-muted-foreground mt-0.5">{role}</p>
+                  <CardContent className="p-4 sm:p-5 md:p-6 pt-5 sm:pt-6 md:pt-8">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#f5e6d3] mx-auto mb-3 sm:mb-4 group-hover:bg-[#f4e4c1] transition-colors duration-300" />
+                    <p className="text-sm sm:text-base font-semibold text-primary">Team Member</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">{role}</p>
                   </CardContent>
                 </Card>
               </StaggerItem>
             )
           )}
         </StaggerContainer>
-      </section>
+      </section> */}
       </>
       )}
     </div>

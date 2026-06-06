@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { GoogleLogin } from "@react-oauth/google";
 import { useAuthStore } from "../store/auth-store";
@@ -17,13 +17,14 @@ export function GoogleSignInButton({ onSuccess }: GoogleSignInButtonProps = {}) 
   const [error, setError] = useState("");
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(320);
+  const [width, setWidth] = useState<number | null>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     const update = () => {
-      const w = Math.max(200, Math.min(400, el.offsetWidth));
+      // Google's button accepts 200–400 px; clamp accordingly
+      const w = Math.max(200, Math.min(400, Math.floor(el.offsetWidth)));
       setWidth(w);
     };
     update();
@@ -59,17 +60,20 @@ export function GoogleSignInButton({ onSuccess }: GoogleSignInButtonProps = {}) 
 
   return (
     <div className="space-y-2">
-      <div ref={containerRef} className="w-full overflow-hidden">
-        <GoogleLogin
-          onSuccess={handleSuccess}
-          onError={() => setError("Google sign-in was cancelled or failed")}
-          theme="outline"
-          size="large"
-          shape="rectangular"
-          text="signin_with"
-          logo_alignment="center"
-          width={width.toString()}
-        />
+      <div ref={containerRef} className="w-full">
+        {width !== null && (
+          <GoogleLogin
+            key={width}
+            onSuccess={handleSuccess}
+            onError={() => setError("Google sign-in was cancelled or failed")}
+            theme="outline"
+            size="large"
+            shape="rectangular"
+            text="signin_with"
+            logo_alignment="center"
+            width={String(width)}
+          />
+        )}
       </div>
       {error && <p className="text-sm text-destructive text-center">{error}</p>}
     </div>

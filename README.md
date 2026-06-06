@@ -147,6 +147,37 @@ RAZORPAY_KEY_SECRET=xxxxxxxxxxxxxxxxxxxxxxxx
 
 `.env.local` is gitignored — never commit it.
 
+### 3b. Google OAuth (for "Sign in with Google")
+
+`NEXT_PUBLIC_GOOGLE_CLIENT_ID` in your env points to an **OAuth 2.0 Client ID** created in [Google Cloud Console](https://console.cloud.google.com).
+
+**The Google account that owns the Cloud project is ONLY used for managing the OAuth Client ID** — it has nothing to do with end-users or transactional email:
+
+| Used for | Not used for |
+|---|---|
+| ✅ Logging into Google Cloud Console | ❌ Receiving customer contact-form emails (those go to Zoho) |
+| ✅ Managing the OAuth Client ID (origins, secrets) | ❌ Sending OTP/verification emails (sent via Zoho SMTP) |
+| ✅ Enabling future Google APIs (Maps, Analytics, etc.) | ❌ Day-to-day business communication |
+
+Customers signing in with Google use **their own** Google accounts — your account is invisible to them.
+
+**To set up the Client ID:**
+
+1. Create or use any Google account (a Gmail address is NOT required — you can sign up at `accounts.google.com/signup` with any existing email).
+2. Go to [Google Cloud Console](https://console.cloud.google.com) → create a new project.
+3. **APIs & Services → OAuth consent screen** → External → fill in app name + emails.
+4. **APIs & Services → Credentials → + Create Credentials → OAuth client ID** → Application type: **Web application**.
+5. Under **Authorized JavaScript origins**, add:
+   - `http://localhost:3000` (dev)
+   - `https://yourdomain.com` (prod)
+   - `https://www.yourdomain.com` (prod, www variant)
+6. Leave **Authorized redirect URIs** empty (we use the popup/credential flow, not redirects).
+7. Copy the **Client ID** and put it in both:
+   - Backend `.env` as `GOOGLE_CLIENT_ID=...`
+   - Frontend `.env.local` as `NEXT_PUBLIC_GOOGLE_CLIENT_ID=...`
+
+Google OAuth is **free** — no billing setup or quotas required for sign-in.
+
 ### 4. Run the frontend
 
 In a second terminal:
@@ -235,5 +266,20 @@ curl http://localhost:3000/robots.txt
 
 - Strapi backend: `../strapi-cms/`
 - Original HTML mockup: `../madhurhtml/`
+
+---
+
+## Accounts Used in This Project
+
+Different external services use different accounts. This avoids tying everything to a single email and makes it easier to delegate access.
+
+| Account | Used for |
+|---------|----------|
+| `madhursweetsdev@zohomail.in` | **Cloudflare R2**, **AWS** (EC2), **Vercel**, **MongoDB Atlas** |
+| `rahulagarwal591@gmail.com` | **Razorpay** only |
+| `madhursweets@zohomail.in` | **SMTP** — transactional email (OTP, password reset, contact-form delivery) via Zoho Mail |
+| `contactmadhursweets@gmail.com` | **Google Cloud Console** — owns the OAuth Client ID for "Sign in with Google". Can also be signed into using `madhursweets@zohomail.in` (same Google account, linked emails) |
+
+> 🔐 Passwords are stored separately in `../ACCOUNTS.md` (top-level workspace, gitignored). Never commit credentials.
 #   m a d h u r - f e  
  

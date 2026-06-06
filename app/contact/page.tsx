@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { FadeUp } from "@/components/ui/motion";
+import { ContactForm } from "@/features/contact/components/contact-form";
 import { API_URL } from "@/lib/proxy";
 
 export const metadata: Metadata = {
@@ -66,19 +64,23 @@ export default async function ContactPage() {
       title: "Visit Us",
       details: visitDetails.length
         ? visitDetails
-        : ["42, Sweet Lane, Chandni Chowk", "Old Delhi, New Delhi - 110006"],
+        : [
+            "Building 4, Phtehpuriya Market",
+            "Village Pali, near Sarafa Market",
+            "Rajasthan - 306401",
+          ],
     },
     {
       icon: Phone,
       title: "Call Us",
-      details: phoneDetails.length ? phoneDetails : ["+91 99999 99999", "+91 11 2345 6789"],
+      details: phoneDetails.length ? phoneDetails : ["+91 73406 11001"],
     },
     {
       icon: Mail,
       title: "Email Us",
       details: emailDetails.length
         ? emailDetails
-        : ["hello@madhursweet.com", "orders@madhursweet.com"],
+        : ["madhursweets@zohomail.in", "rahulagarwal591@gmail.com"],
     },
     {
       icon: Clock,
@@ -89,6 +91,10 @@ export default async function ContactPage() {
     },
   ];
 
+  // Exact pin for MADHUR SWEETS, Pali (from Google Maps)
+  const mapSrc =
+    "https://maps.google.com/maps?q=25.7770034,73.3237165&z=18&hl=en&output=embed";
+
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10 md:py-24">
       <FadeUp>
@@ -96,10 +102,13 @@ export default async function ContactPage() {
           <p className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-secondary mb-3">
             Get in Touch
           </p>
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-primary">Contact Us</h1>
-          <p className="text-muted-foreground mt-3 sm:mt-5 max-w-2xl mx-auto text-sm sm:text-lg leading-relaxed">
-            Have a question, custom order request, or feedback? We would love to hear
-            from you. Reach out using the form below or visit us at our store.
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-primary">
+            Contact Us
+          </h1>
+          <p className="text-muted-foreground mt-3 sm:mt-4 max-w-2xl mx-auto text-sm leading-relaxed">
+            Have a question, custom order request, or feedback? We would love to
+            hear from you. Reach out using the form below or visit us at our
+            store.
           </p>
         </div>
       </FadeUp>
@@ -107,39 +116,7 @@ export default async function ContactPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10 lg:gap-14">
         {/* Contact Form */}
         <FadeUp delay={0.1}>
-          <Card className="border-0 shadow-[0_10px_40px_rgba(139,0,0,0.1)] hover:shadow-[0_15px_50px_rgba(139,0,0,0.15)] transition-shadow duration-300">
-            <CardHeader className="pb-3 sm:pb-4">
-              <CardTitle className="text-lg sm:text-xl text-primary">Send us a Message</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form className="space-y-4 sm:space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Name</label>
-                    <Input placeholder="Your name" className="h-10 sm:h-11 bg-[#faf6f0] border-[#faf6f0] focus:border-secondary focus:bg-white" />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Email</label>
-                    <Input type="email" placeholder="your@email.com" className="h-10 sm:h-11 bg-[#faf6f0] border-[#faf6f0] focus:border-secondary focus:bg-white" />
-                  </div>
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Subject</label>
-                  <Input placeholder="How can we help?" className="h-10 sm:h-11 bg-[#faf6f0] border-[#faf6f0] focus:border-secondary focus:bg-white" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Message</label>
-                  <Textarea
-                    placeholder="Tell us more about your inquiry..."
-                    className="min-h-30 sm:min-h-37.5 resize-none bg-[#faf6f0] border-[#faf6f0] focus:border-secondary focus:bg-white"
-                  />
-                </div>
-                <Button type="submit" className="w-full h-10 sm:h-11 shadow-sm shadow-primary/15">
-                  Send Message
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
+          <ContactForm />
         </FadeUp>
 
         {/* Contact Info */}
@@ -154,9 +131,14 @@ export default async function ContactPage() {
                         <item.icon className="h-5 w-5 text-secondary" />
                       </div>
                       <div>
-                        <h3 className="font-semibold mb-0.5 text-primary">{item.title}</h3>
+                        <h3 className="text-sm sm:text-base font-semibold mb-0.5 text-primary">
+                          {item.title}
+                        </h3>
                         {item.details.map((d, i) => (
-                          <p key={i} className="text-sm text-muted-foreground leading-relaxed">
+                          <p
+                            key={i}
+                            className="text-xs sm:text-sm text-muted-foreground leading-relaxed"
+                          >
                             {d}
                           </p>
                         ))}
@@ -170,9 +152,9 @@ export default async function ContactPage() {
             {/* Map — Google Maps embed (free, no API key) */}
             <Card className="overflow-hidden border-0 shadow-[0_5px_20px_rgba(0,0,0,0.08)]">
               <iframe
-                title="Madhur Sweet location — Chandni Chowk, Old Delhi"
-                src="https://maps.google.com/maps?q=Chandni+Chowk,+Old+Delhi,+New+Delhi&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                className="w-full h-72 border-0"
+                title="Madhur Sweets location"
+                src={mapSrc}
+                className="w-full h-56 sm:h-72 border-0"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 allowFullScreen

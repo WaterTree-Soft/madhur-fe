@@ -26,43 +26,50 @@ export default async function CookiesPolicyPage() {
   const content = await getPolicy();
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-16">
-      <h1 className="text-4xl font-bold mb-8">Cookies Policy</h1>
+    <div className="mx-auto max-w-3xl px-4 sm:px-6 py-8 sm:py-12 md:py-16">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 md:mb-8">
+        Cookies Policy
+      </h1>
 
       {content ? (
-        <div className="space-y-4 text-foreground/90 leading-relaxed whitespace-pre-wrap">
+        <div className="space-y-4 text-sm text-foreground/90 leading-relaxed whitespace-pre-wrap">
           {content}
         </div>
       ) : (
         <>
-          <p className="text-muted-foreground mb-8">
+          <p className="text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-8">
             Last updated: April 1, 2026
           </p>
-          <div className="space-y-8 text-foreground/90 leading-relaxed">
+          <div className="space-y-6 sm:space-y-8 text-sm text-foreground/90 leading-relaxed">
             <section>
-              <h2 className="text-2xl font-semibold mb-4">What Are Cookies</h2>
+              <h2 className="text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3">
+                What Are Cookies
+              </h2>
               <p>
-                Cookies are small text files placed on your device when you visit
-                {" "}{SITE_NAME}. They help us provide you with a better experience by
-                remembering your preferences, keeping you signed in, and
-                understanding how you use our site.
+                Cookies are small text files placed on your device when you
+                visit {SITE_NAME}. They help us provide you with a better
+                experience by remembering your preferences, keeping you signed
+                in, and understanding how you use our site.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold mb-4">Types of Cookies We Use</h2>
-              <ul className="space-y-4">
+              <h2 className="text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3">
+                Types of Cookies We Use
+              </h2>
+              <ul className="space-y-3 list-disc pl-5">
                 <li>
                   <strong>Essential Cookies:</strong> Required for basic site
                   functionality, such as shopping cart and checkout processes.
                 </li>
                 <li>
-                  <strong>Analytics Cookies:</strong> Help us understand how visitors
-                  interact with our website by collecting anonymous usage data.
+                  <strong>Analytics Cookies:</strong> Help us understand how
+                  visitors interact with our website by collecting anonymous
+                  usage data.
                 </li>
                 <li>
-                  <strong>Preference Cookies:</strong> Remember your settings and
-                  choices, such as language and region preferences.
+                  <strong>Preference Cookies:</strong> Remember your settings
+                  and choices, such as language and region preferences.
                 </li>
                 <li>
                   <strong>Marketing Cookies:</strong> Used to deliver relevant
@@ -72,26 +79,31 @@ export default async function CookiesPolicyPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold mb-4">Managing Cookies</h2>
+              <h2 className="text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3">
+                Managing Cookies
+              </h2>
               <p>
-                You can control and manage cookies through your browser settings.
-                Most browsers allow you to block or delete cookies. However,
-                blocking essential cookies may affect the functionality of our
-                website.
+                You can control and manage cookies through your browser
+                settings. Most browsers allow you to block or delete cookies.
+                However, blocking essential cookies may affect the functionality
+                of our website.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold mb-4">Contact</h2>
+              <h2 className="text-base sm:text-lg md:text-xl font-semibold mb-2 sm:mb-3">
+                Contact
+              </h2>
               <p>
-                If you have questions about our use of cookies, please email us at{" "}
+                If you have questions about our use of cookies, please email us
+                at{" "}
                 <a
                   href="mailto:privacy@madhursweet.com"
                   className="text-primary underline"
                 >
-                  privacy@madhursweet.com
+                  madhursweets@zohomail.in
                 </a>
-                .
+                
               </p>
             </section>
           </div>
