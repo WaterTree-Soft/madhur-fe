@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { GoogleLogin } from "@react-oauth/google";
 import { useAuthStore } from "../store/auth-store";
@@ -15,6 +15,22 @@ export function GoogleSignInButton({ onSuccess }: GoogleSignInButtonProps = {}) 
   const redirectTo = searchParams.get("redirect");
   const loginWithGoogle = useAuthStore((s) => s.loginWithGoogle);
   const [error, setError] = useState("");
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(320);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const update = () => {
+      const w = Math.max(200, Math.min(400, el.offsetWidth));
+      setWidth(w);
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   const handleSuccess = async (credentialResponse: { credential?: string }) => {
     if (!credentialResponse.credential) {
@@ -43,7 +59,7 @@ export function GoogleSignInButton({ onSuccess }: GoogleSignInButtonProps = {}) 
 
   return (
     <div className="space-y-2">
-      <div className="flex w-full justify-center [&>div]:w-full! [&_iframe]:w-full!">
+      <div ref={containerRef} className="w-full overflow-hidden">
         <GoogleLogin
           onSuccess={handleSuccess}
           onError={() => setError("Google sign-in was cancelled or failed")}
@@ -52,7 +68,7 @@ export function GoogleSignInButton({ onSuccess }: GoogleSignInButtonProps = {}) 
           shape="rectangular"
           text="signin_with"
           logo_alignment="center"
-          width="360"
+          width={width.toString()}
         />
       </div>
       {error && <p className="text-sm text-destructive text-center">{error}</p>}
