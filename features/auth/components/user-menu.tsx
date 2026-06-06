@@ -78,12 +78,12 @@ export function UserMenu() {
           {view === "login" && (
             <>
               <DialogHeader className="space-y-1.5 text-center sm:text-center">
-                <DialogTitle className="text-2xl font-semibold">Welcome back</DialogTitle>
+                <DialogTitle className="text-xl sm:text-2xl font-semibold">Welcome back</DialogTitle>
                 <DialogDescription>
                   Sign in to your Madhur Sweets account
                 </DialogDescription>
               </DialogHeader>
-              <div className="mt-6">
+              <div className="mt-4 sm:mt-6">
                 <LoginForm
                   onSuccess={handleSuccess}
                   onSwitchToRegister={() => setView("register")}
@@ -96,12 +96,12 @@ export function UserMenu() {
           {view === "register" && (
             <>
               <DialogHeader className="space-y-1.5 text-center sm:text-center">
-                <DialogTitle className="text-2xl font-semibold">Create an account</DialogTitle>
+                <DialogTitle className="text-xl sm:text-2xl font-semibold">Create an account</DialogTitle>
                 <DialogDescription>
                   Sign up to start ordering your favorite sweets
                 </DialogDescription>
               </DialogHeader>
-              <div className="mt-6">
+              <div className="mt-4 sm:mt-6">
                 <RegisterForm
                   onSwitchToLogin={() => setView("login")}
                   onSuccess={handleSuccess}
@@ -113,12 +113,12 @@ export function UserMenu() {
           {view === "forgot" && (
             <>
               <DialogHeader className="space-y-1.5 text-center sm:text-center">
-                <DialogTitle className="text-2xl font-semibold">Forgot password?</DialogTitle>
+                <DialogTitle className="text-xl sm:text-2xl font-semibold">Forgot password?</DialogTitle>
                 <DialogDescription>
                   No worries, we&apos;ll send you reset instructions
                 </DialogDescription>
               </DialogHeader>
-              <div className="mt-6">
+              <div className="mt-4 sm:mt-6">
                 <ForgotPasswordForm
                   onBackToLogin={() => setView("login")}
                   onSuccess={handleSuccess}

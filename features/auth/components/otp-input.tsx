@@ -46,7 +46,7 @@ export function OtpInput({ value, onChange, length = 6, autoFocus = true }: OtpI
   };
 
   return (
-    <div className="flex gap-2 justify-center">
+    <div className="flex gap-1.5 sm:gap-2 justify-center w-full">
       {digits.map((digit, i) => (
         <input
           key={i}
@@ -61,7 +61,7 @@ export function OtpInput({ value, onChange, length = 6, autoFocus = true }: OtpI
           onKeyDown={(e) => handleKeyDown(i, e)}
           onPaste={handlePaste}
           autoFocus={autoFocus && i === 0}
-          className="h-12 w-11 rounded-md border border-input bg-background text-center text-lg font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          className="h-11 sm:h-12 min-w-0 flex-1 max-w-12 rounded-md border border-input bg-background text-center text-base sm:text-lg font-semibold focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
         />
       ))}
     </div>
