@@ -2,6 +2,7 @@
 
 import type React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Globe, Share2, MessageCircle } from "lucide-react";
 import { FOOTER_LINKS, SITE_NAME, SITE_DESCRIPTION } from "@/lib/constants";
 
@@ -9,7 +10,8 @@ export function Footer() {
   return (
     <footer
       style={{
-        background: "linear-gradient(to bottom right, hsl(var(--footer-bg-from)), hsl(var(--footer-bg-to)))",
+        background:
+          "linear-gradient(to bottom right, hsl(var(--footer-bg-from)), hsl(var(--footer-bg-to)))",
         color: "hsl(var(--footer-text))",
       }}
     >
@@ -21,7 +23,9 @@ export function Footer() {
               href="/"
               className="text-xl font-bold transition-colors duration-200"
               style={{ color: "hsl(var(--footer-accent))" }}
-              onMouseEnter={(e) => (e.currentTarget.style.filter = "brightness(1.2)")}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.filter = "brightness(1.2)")
+              }
               onMouseLeave={(e) => (e.currentTarget.style.filter = "")}
             >
               {SITE_NAME}
@@ -46,8 +50,10 @@ export function Footer() {
                     } as React.CSSProperties
                   }
                   onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.backgroundColor = "hsl(var(--footer-accent))";
-                    (e.currentTarget as HTMLElement).style.color = "hsl(var(--footer-bg-from))";
+                    (e.currentTarget as HTMLElement).style.backgroundColor =
+                      "hsl(var(--footer-accent))";
+                    (e.currentTarget as HTMLElement).style.color =
+                      "hsl(var(--footer-bg-from))";
                   }}
                   onMouseLeave={(e) => {
                     (e.currentTarget as HTMLElement).style.backgroundColor = "";
@@ -80,7 +86,8 @@ export function Footer() {
                       href={href}
                       className="text-sm opacity-80 transition-colors duration-200"
                       onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.color = "hsl(var(--footer-accent))";
+                        (e.currentTarget as HTMLElement).style.color =
+                          "hsl(var(--footer-accent))";
                         (e.currentTarget as HTMLElement).style.opacity = "1";
                       }}
                       onMouseLeave={(e) => {
@@ -103,8 +110,30 @@ export function Footer() {
           style={{ borderColor: "hsl(var(--footer-accent) / 0.2)" }}
         >
           <div className="flex flex-col items-center justify-between gap-3 text-xs opacity-60 sm:flex-row">
-            <p>&copy; {new Date().getFullYear()} {SITE_NAME}. All rights reserved.</p>
-            <p>Made with love in India</p>
+            <p>
+              &copy; {new Date().getFullYear()} {SITE_NAME}. All rights
+              reserved.
+            </p>
+            <p className="flex items-center gap-1.5">
+              <span>Made with love in India by</span>
+              <a
+                href="https://watertreeinfotech.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Water Tree"
+                className="inline-flex items-center transition-opacity hover:opacity-100"
+                style={{ opacity: 1 }}
+              >
+                <Image
+                  src="/wt.png"
+                  alt="Water Tree"
+                  width={20}
+                  height={20}
+                  className="h-5 w-auto"
+                  unoptimized
+                />
+              </a>
+            </p>
           </div>
         </div>
       </div>
